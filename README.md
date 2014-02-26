@@ -38,6 +38,20 @@ returns **new FSOQueue instance**
 
 ---
 
+
+**FSO.toURL**
+
+```
+toURL(
+	str_fullPath
+)
+[ returns str_resourceURL ]
+```
+
+returns a resource URL for specified ```fullPath```
+
+---
+
 FSOQueue
 --------
 
