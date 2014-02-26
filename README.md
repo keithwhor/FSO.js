@@ -12,8 +12,8 @@ FSO
 
 ```
 FSO(
-	opt_int_byteSize, [= 1024 * 1024 * 1024 (1GB)]
-	opt_bool_persisent, [= false]
+	opt_int_byteSize, [ = 1024 * 1024 * 1024 (1GB) ]
+	opt_bool_persisent, [ = false ]
 	opt_fn_successCallback,
 	opt_fn_errorCallback
 )
@@ -231,7 +231,7 @@ Copies file or directory at ```fullPath``` to ```toPath``` with optional name ``
 ```
 read(
 	string_fullPath,
-	fn_successCallback [returns str_data]
+	fn_successCallback [ arguments str_data ]
 )
 [ returns FSOQueue ]
 ```
@@ -245,7 +245,7 @@ Reads file at ```fullPath``` and returns ```data``` to first argument of ```succ
 ```
 readBuffer(
 	string_fullPath,
-	fn_successCallback [returns arrayBuffer_data]
+	fn_successCallback [ arguments arrayBuffer_data ]
 )
 [ returns FSOQueue ]
 ```
@@ -259,7 +259,7 @@ Reads file at ```fullPath``` and returns ```data``` to first argument of ```succ
 ```
 info(
 	string_fullPath,
-	fn_successCallback [returns obj_fileData]
+	fn_successCallback [ arguments obj_fileData ]
 )
 [ returns FSOQueue ]
 ```
@@ -274,7 +274,7 @@ Reads file metadata at ```fullPath``` and returns ```fileData``` to first argume
 list(
 	string_fullPath,
 	int_depth,
-	fn_successCallback [returns obj_nestedList]
+	fn_successCallback [ arguments obj_nestedList ]
 )
 [ returns FSOQueue ]
 ```
@@ -291,7 +291,7 @@ Use ```FSOUtil.prettyDirectory``` for quick ```nestedList``` prettification.
 
 ```
 getBytes(
-	fn_successCallback [returns int_usedBytes, int_availableBytes]
+	fn_successCallback [ arguments int_usedBytes, int_availableBytes ]
 )
 [ returns FSOQueue ]
 ```
@@ -299,6 +299,22 @@ getBytes(
 Returns ```usedBytes, availableBytes``` to first two arguments of ```successCallback```, respectively.
 
 ```availableBytes``` represents the *total available space*, including ```usedBytes``` - not the remaining space.
+
+---
+
+**FSOQueue.execute**
+
+```
+execute(
+	opt_fn_successCallback,
+	opt_fn_errorCallback [ arguments obj_error ]
+)
+[ returns FSOQueue ]
+```
+
+Executes a queue, prevents new commands from being queued, and runs ```successCallback``` on queue completion.
+
+```errorCallback``` will override default error reporting and run on failure of any command in the queue.
 
 ---
 
