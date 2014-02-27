@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>FSO.js by keithwhor</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>FSO.js</h1>
+        <h2>JavaScript FileSystemObject library for temporary and permanent client-side file storage</h2>
+        <a href="https://github.com/keithwhor/FSO.js" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="fsojs" class="anchor" href="#fsojs"><span class="octicon octicon-link"></span></a>FSO.js</h1>
+
+<p>FSO.js is a JavaScript FileSystemObject library for temporary and permanent client-side file storage.</p>
+
+<p>This ReadMe serves as the official documentation for FSO.js.</p>
+
+<p>For more in-depth information about the project, visit <a href="http://fsojs.com">FSOjs.com</a>.</p>
+
+<p>Detailed example code is available at <a href="http://fsojs.com/examples.html">FSOjs - Examples</a>.</p>
+
+<p>Tweet the creator (me!) at <a href="http://twitter.com/keithwhor">@keithwhor</a></p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>FSO can be included on any webpage using:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"your_script_path/fso.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>And a typical use case might be:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">fso</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FSO</span><span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span> <span class="c1">// Create 1GB of temp storage</span>
+
+<span class="kd">var</span> <span class="nx">fsq</span> <span class="o">=</span> <span class="nx">fso</span><span class="p">.</span><span class="nx">createQueue</span><span class="p">();</span>
+
+<span class="c1">// Queues process commands sequentially,</span>
+<span class="c1">// prepare your queue like so:</span>
+<span class="nx">fsq</span><span class="p">.</span><span class="nx">mkdir</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">);</span>
+<span class="nx">fsq</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'hello/world.txt'</span><span class="p">,</span> <span class="s1">'Hello World'</span><span class="p">);</span>
+<span class="nx">fsq</span><span class="p">.</span><span class="nx">read</span><span class="p">(</span><span class="s1">'hello/world.txt'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span> <span class="p">});</span>
+
+<span class="c1">// Finally, execute asynchronously.</span>
+<span class="nx">fsq</span><span class="p">.</span><span class="nx">execute</span><span class="p">();</span>
+</pre></div>
+
+<h2>
+<a name="fso" class="anchor" href="#fso"><span class="octicon octicon-link"></span></a>FSO</h2>
+
+<p><strong>FSO</strong></p>
+
+<pre><code>FSO(
+    opt_int_byteSize, [ = 1024 * 1024 * 1024 (1GB) ]
+    opt_bool_persisent, [ = false ]
+    opt_fn_successCallback,
+    opt_fn_errorCallback
+)
+</code></pre>
+
+<p>The main FSO.js constructor</p>
+
+<p>returns <strong>FSO instance</strong></p>
+
+<p>Instantiate using <code>var fso = new FSO();</code></p>
+
+<hr><p><strong>FSO.createQueue</strong></p>
+
+<pre><code>createQueue()
+[ returns new FSOQueue ]
+</code></pre>
+
+<p>returns <strong>new FSOQueue instance</strong></p>
+
+<hr><p><strong>FSO.toURL</strong></p>
+
+<pre><code>toURL(
+    str_fullPath
+)
+[ returns str_resourceURL ]
+</code></pre>
+
+<p>returns a resource URL for specified <code>fullPath</code></p>
+
+<hr><h2>
+<a name="fsoqueue" class="anchor" href="#fsoqueue"><span class="octicon octicon-link"></span></a>FSOQueue</h2>
+
+<p><strong>FSOQueue.write</strong></p>
+
+<pre><code>write(
+    string_fullFilePath,
+    string_data OR arrayBuffer_data OR array_data,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Writes a file to an existing directory.</p>
+
+<p>Creates files if they do not exist.</p>
+
+<p>Truncates and overwrites existing files.</p>
+
+<hr><p><strong>FSOQueue.append</strong></p>
+
+<pre><code>append(
+    string_fullFilePath,
+    string_data OR arrayBuffer_data OR array_data,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Appends data to an existing file.</p>
+
+<p>Creates files if they do not exist.</p>
+
+<hr><p><strong>FSOQueue.insert</strong></p>
+
+<pre><code>insert(
+    string_fullFilePath,
+    string_data OR arrayBuffer_data OR array_data,
+    int_byteOffset,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Inserts data to existing file at <code>byteOffset</code>.</p>
+
+<p>Overwrites file data at <code>byteOffset</code> to data length.</p>
+
+<p>Zeroes out all data between current file length and <code>byteOffset</code>.</p>
+
+<p>Creates files if they do not exist.</p>
+
+<hr><p><strong>FSOQueue.put</strong></p>
+
+<pre><code>put(
+    file_File,
+    string_fullPath,
+    opt_string_name,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Places a <code>File</code> Object (i.e. result of file selection) at <code>fullPath</code>.</p>
+
+<p>Will use given name if name not provided, or given a falsey value (i.e. empty string or <code>null</code>).</p>
+
+<p>Overwrites existing files with the same name.</p>
+
+<hr><p><strong>FSOQueue.mkdir</strong></p>
+
+<pre><code>mkdir(
+    string_fullPath,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Recursively creates all directories in <code>fullPath</code> if they do not exist</p>
+
+<hr><p><strong>FSOQueue.rm</strong></p>
+
+<pre><code>rm(
+    string_fullPath,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Removes an existing file or empty directory at <code>fullPath</code>.</p>
+
+<hr><p><strong>FSOQueue.rmdir</strong></p>
+
+<pre><code>rmdir(
+    string_fullPath,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Recursively removes a directory (including contents) at <code>fullPath</code>.</p>
+
+<hr><p><strong>FSOQueue.rename</strong></p>
+
+<pre><code>rename(
+    string_fullPath,
+    string_name,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Renames file or directory at <code>fullPath</code> to <code>name</code>.</p>
+
+<hr><p><strong>FSOQueue.move</strong></p>
+
+<pre><code>move(
+    string_fullPath,
+    string_toPath,
+    opt_string_name,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Moves file or directory at <code>fullPath</code> to <code>toPath</code> with optional name <code>name</code>.</p>
+
+<p><code>name</code> will remain unchanged if provided with a falsey value.</p>
+
+<hr><p><strong>FSOQueue.copy</strong></p>
+
+<pre><code>copy(
+    string_fullPath,
+    string_toPath,
+    opt_string_name,
+    opt_fn_successCallback
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Copies file or directory at <code>fullPath</code> to <code>toPath</code> with optional name <code>name</code>.</p>
+
+<p><code>name</code> will remain unchanged if provided with a falsey value.</p>
+
+<hr><p><strong>FSOQueue.read</strong></p>
+
+<pre><code>read(
+    string_fullPath,
+    fn_successCallback [ arguments str_data ]
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Reads file at <code>fullPath</code> and returns <code>data</code> to first argument of <code>successCallback</code>.</p>
+
+<hr><p><strong>FSOQueue.readBuffer</strong></p>
+
+<pre><code>readBuffer(
+    string_fullPath,
+    fn_successCallback [ arguments arrayBuffer_data ]
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Reads file at <code>fullPath</code> and returns <code>data</code> to first argument of <code>successCallback</code>.</p>
+
+<hr><p><strong>FSOQueue.info</strong></p>
+
+<pre><code>info(
+    string_fullPath,
+    fn_successCallback [ arguments obj_fileData ]
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Reads file metadata at <code>fullPath</code> and returns <code>fileData</code> to first argument of <code>successCallback</code>.</p>
+
+<hr><p><strong>FSOQueue.list</strong></p>
+
+<pre><code>list(
+    string_fullPath,
+    int_depth,
+    fn_successCallback [ arguments obj_nestedList ]
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Reads directory contents of <code>fullPath</code> recursively to <code>depth</code> directories deep, and returns <code>nestedList</code> to first argument of <code>successCallback</code>.</p>
+
+<p>If <code>depth === null</code>, will return full listing.</p>
+
+<p>Use <code>FSOUtil.prettyDirectory</code> for quick <code>nestedList</code> prettification.</p>
+
+<hr><p><strong>FSOQueue.getBytes</strong></p>
+
+<pre><code>getBytes(
+    fn_successCallback [ arguments int_usedBytes, int_availableBytes ]
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Returns <code>usedBytes, availableBytes</code> to first two arguments of <code>successCallback</code>, respectively.</p>
+
+<p><code>availableBytes</code> represents the <em>total available space</em>, including <code>usedBytes</code> - not the remaining space.</p>
+
+<hr><p><strong>FSOQueue.execute</strong></p>
+
+<pre><code>execute(
+    opt_fn_successCallback,
+    opt_fn_errorCallback [ arguments obj_error ]
+)
+[ returns FSOQueue ]
+</code></pre>
+
+<p>Executes a queue, prevents new commands from being queued, and runs <code>successCallback</code> on queue completion.</p>
+
+<p><code>errorCallback</code> will override default error reporting and run on failure of any command in the queue.</p>
+
+<hr><h2>
+<a name="fsoutil" class="anchor" href="#fsoutil"><span class="octicon octicon-link"></span></a>FSOUtil</h2>
+
+<p>A static object containing useful utilities</p>
+
+<hr><p><strong>FSOUtil.prettyDirectory</strong></p>
+
+<pre><code>prettyDirectory(
+    object_nestedList
+)
+[ returns str_prettyList ]
+</code></pre>
+
+<p>Returns a prettified (text) directory listing of <code>nestedList</code></p>
+
+<hr><p><strong>FSOUtil.prettySize</strong></p>
+
+<pre><code>prettySize(
+    int_bytes
+)
+[ returns str_prettySize ]
+</code></pre>
+
+<p>Returns a prettified (text) size of <code>bytes</code></p>
+
+<hr>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/keithwhor/FSO.js/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/keithwhor/FSO.js/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/keithwhor/FSO.js"></a> is maintained by <a href="https://github.com/keithwhor">keithwhor</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
