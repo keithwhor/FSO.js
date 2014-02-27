@@ -1,9 +1,42 @@
-FSO.js README
-=============
+FSO.js
+======
+
+FSO.js is a JavaScript FileSystemObject library for temporary and permanent client-side file storage.
 
 This ReadMe serves as the official documentation for FSO.js.
 
-For more information about the project, visit [FSOjs.com](http://fsojs.com) or tweet [@keithwhor](http://twitter.com/keithwhor)
+For more in-depth information about the project, visit [FSOjs.com](http://fsojs.com).
+
+Detailed example code is available at [FSOjs - Examples](http://fsojs.com/examples.html).
+
+Tweet the creator (me!) at [@keithwhor](http://twitter.com/keithwhor)
+
+Getting Started
+---------------
+
+FSO can be included on any webpage using:
+
+```html
+<script src="your_script_path/fso.min.js"></script>
+```
+
+And a typical use case might be:
+
+```js
+var fso = new FSO(1024 * 1024 * 1024, false); // Create 1GB of temp storage
+
+var fsq = fso.createQueue();
+
+// Queues process commands sequentially,
+// prepare your queue like so:
+fsq.mkdir('hello');
+fsq.write('hello/world.txt', 'Hello World');
+fsq.read('hello/world.txt', function(data) { console.log(data); });
+
+// Finally, execute asynchronously.
+fsq.execute();
+```
+
 
 FSO
 ---
