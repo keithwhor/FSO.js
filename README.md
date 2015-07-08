@@ -1,6 +1,8 @@
 FSO.js
 ======
 
+### The file system API that this project is based on has been deprecated, and is no longer supported by most major browsers. This repository exists for archival purposes only.
+
 FSO.js is a JavaScript FileSystemObject library for temporary and permanent client-side file storage.
 
 This ReadMe serves as the official documentation for FSO.js.
